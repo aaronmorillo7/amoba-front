@@ -14,38 +14,6 @@
 <script>
 
 export default {
-    name: 'PaginationBar',
-    data: function(){
-        return{
-            list: ['Pedro', 'Maria']
-        }
-    },
-    components: {
-    },
-    methods:{
-        
-    }
+    name: 'PaginationBar'
 }
 </script>
-<style lang="css">
-    ul, li{
-        list-style: none;
-    }
-    #wrapper{
-        width: 900px;
-        margin: 20px auto;
-    }
-    #pagination-data-container{
-        margin-top: 5px;
-    }
-        #pagination-data-container ul{
-        padding: 0;
-        margin: 0;
-    }
-    #pagination-data-container li{
-        margin-bottom: 5px;
-        padding: 5px 10px;
-        background: #eee;
-        color: #666;
-    }
-</style>
