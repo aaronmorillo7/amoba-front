@@ -2,18 +2,18 @@
     <!-- Search and Modal button  -->
     <div class="grid grid-cols-2 m-8">
         <section class="col-span-1">
-        <div class="w-64">
-            <div class="bg-white shadow flex rounded-lg">
-            <span class="flex justify-end items-center text-gray-500 p-2">
-                <i class="material-icons text-3xl text-yellow-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                </i>
-            </span>
-            <input class="rounded p-2" type="text" placeholder="Buscar Persona" v-model="keyWord" v-on:keyup="search()">
+            <div class="w-64 float-left">
+                <div class="bg-white shadow flex rounded-lg">
+                <span class="flex items-center text-gray-500 p-2">
+                    <i class="material-icons text-3xl text-yellow-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    </i>
+                </span>
+                <input class="rounded p-2" type="text" placeholder="Buscar Persona" v-model="keyWord" v-on:keyup="search()">
+                </div>
             </div>
-        </div>
         </section>
         <section class="col-span-1">
             <button v-on:click="toggleModal()" class="bg-yellow-600 text-white rounded-lg p-3 float-right">Nuevo contacto</button>
@@ -104,14 +104,19 @@
 
             <div class="mb-4">
                 <div class="grid grid-cols-2 content-center">
-                    <span class="mt-2 col-span-1 leading-normal text-sx ">Carga imagen <span class="text-red-500">*</span></span>
+                    <span class="mt-2 col-span-1 leading-normal text-sx grid grid-rows-2">
+                        <p class="rows-span-1"> Carga imagen <span class="text-red-500">*</span></p>
+                        <span class="text-sx rows-span-1">{{fileName}}</span>
+                        </span>
                     <div class="flex items-center justify-center border border-dashed border-gray-500 rounded-lg m-3">    
                         <label class="w-64 col-span-1 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                             </svg>
                             <input type='file' accept="image/*" ref="file" class="hidden" @change="onFileChange($event)">
+                            
                         </label>
+                        
                     </div>
                 </div>
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
@@ -142,7 +147,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="showModal" id="bg-modal" class="opacity-25 fixed inset-0 z-40"></div>
         
     <div class="grid grid-cols-4 m-8">
         <input class="rounded p-2 m-2" type="text" placeholder="Buscar Id" v-model="keyId" v-on:keyup="searchById()">
@@ -200,7 +205,7 @@ export default {
         return {
             users: [],
             showModal: false, 
-            File: [],
+            fileName: '',
             user:{
                 id: null,
                 name: "",
@@ -244,7 +249,8 @@ export default {
             })
         },
         toggleModal: function(){
-            this.showModal = !this.showModal;
+            this.showModal = !this.showModal
+            this.fileName = ''
         },
         create(){
             const predata = {
@@ -301,12 +307,13 @@ export default {
             })         
         },
         onFileChange(e) {
-            this.imageFile = this.$refs.file.files[0];
+            this.imageFile = this.$refs.file.files[0]
+            this.fileName = this.$refs.file.files[0].name
             const imageReader = new FileReader()
             imageReader.readAsDataURL(this.imageFile)
             console.log(imageReader)
             imageReader.onload = e =>{
-                    this.photo = e.target.result;
+                    this.photo = e.target.result;                    
                 };
         },
         editUser(target_user){
@@ -372,3 +379,10 @@ export default {
     }
 }
 </script>
+<style>
+    #bg-modal{
+        background-color: black;
+        z-index: 0;
+        filter: blur(10px);
+    }
+</style>
